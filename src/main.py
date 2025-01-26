@@ -76,9 +76,6 @@ def main() -> None:
     if "messages" not in st.session_state:
         st.session_state.messages = []
     display_history(st.session_state.messages)
-    # prompt = "株式会社NTTデータとその競合について教えて．企業情報を検索する場合，中長期計画なども調査しなさい．"
-    # prompt = "日本の建国記念日はいつ？"
-    # prompt = "牡丹についての詩を書いてください"
 
     if prompt := st.chat_input("What's up?"):
         input_msg = {"role": "user", "content": [{"text": prompt}]}
