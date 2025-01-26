@@ -42,11 +42,9 @@ def format_result(response) -> str:
     return f"{result_content}\n\n{citations}\n\n{entry_point_html}"
 
 
-def generate_answer_google_search(prompt: str) -> GenerationResponse:
-    model = GenerativeModel(
-        model_name="gemini-1.5-flash", system_instruction=SYSTEM_PROMPT
-    )
-
+def generate_answer_google_search(
+    model: GenerativeModel, prompt: str
+) -> GenerationResponse:
     # Use Google Search for grounding
     tool = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
 
@@ -61,19 +59,33 @@ def generate_answer_google_search(prompt: str) -> GenerationResponse:
     return response
 
 
-def display_history(messages):
+def display_history(messages) -> None:
     for message in messages:
         display_msg_content(message)
 
 
-def display_msg_content(message):
+def display_msg_content(message) -> None:
     with st.chat_message(message["role"]):
         st.markdown(message["content"][0]["text"], unsafe_allow_html=True)
 
 
-def main() -> None:
+@st.cache_resource
+def initialize_vertexai() -> None:
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vertexai-credentials.json"
     vertexai.init(project=GC_PG, location="us-central1")
+
+
+@st.cache_resource
+def get_gc_model() -> GenerativeModel:
+    return GenerativeModel(
+        model_name="gemini-1.5-flash", system_instruction=SYSTEM_PROMPT
+    )
+
+
+def main() -> None:
+    initialize_vertexai()
+    model = get_gc_model()
+
     if "messages" not in st.session_state:
         st.session_state.messages = []
     display_history(st.session_state.messages)
@@ -83,7 +95,7 @@ def main() -> None:
         display_msg_content(input_msg)
         st.session_state.messages.append(input_msg)
 
-        response = generate_answer_google_search(prompt)
+        response = generate_answer_google_search(model, prompt)
         formatted_result = format_result(response)
         response_msg = {
             "role": "assistant",
