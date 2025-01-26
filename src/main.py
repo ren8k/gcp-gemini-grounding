@@ -4,6 +4,7 @@ import streamlit as st
 import vertexai
 from vertexai.generative_models import (
     GenerationConfig,
+    GenerationResponse,
     GenerativeModel,
     Tool,
     grounding,
@@ -41,7 +42,7 @@ def format_result(response) -> str:
     return f"{result_content}\n\n{citations}\n\n{entry_point_html}"
 
 
-def generate_answer_google_search(prompt: str) -> str:
+def generate_answer_google_search(prompt: str) -> GenerationResponse:
     model = GenerativeModel(
         model_name="gemini-1.5-flash", system_instruction=SYSTEM_PROMPT
     )
