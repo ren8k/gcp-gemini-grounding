@@ -28,9 +28,9 @@ def get_entry_point_html(response) -> str:
 
 def get_citations(response) -> str:
     urls = ""
-    for web in response.candidates[0].grounding_metadata.grounding_chunks:
-        print(web)  # 空の可能性あり．
-        urls += f"- [{web.web.title}]({web.web.uri})\n"
+    for grounding_chunk in response.candidates[0].grounding_metadata.grounding_chunks:
+        # print(grounding_chunk)  # 空の可能性あり．
+        urls += f"- [{grounding_chunk.web.title}]({grounding_chunk.web.uri})\n"
     info_citations = f"#### 参考URL\n\n{urls}"
     return info_citations
 
@@ -55,7 +55,6 @@ def generate_answer_google_search(
             temperature=0.0,
         ),
     )
-
     return response
 
 
