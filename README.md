@@ -30,9 +30,6 @@ pip install google-cloud-aiplatform
 
    - キーファイルは `vertexai-credentials.json` として保存し，`src` ディレクトリに配置します．
 
-3. 環境変数の設定:
-   - `main.py` の変数 `GC_PG` に Google Cloud プロジェクトのプロジェクト ID を設定します．
-
 ## 使用方法
 
 1. アプリケーションの起動:

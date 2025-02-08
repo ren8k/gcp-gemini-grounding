@@ -10,8 +10,6 @@ from vertexai.generative_models import (
     grounding,
 )
 
-GC_PG = "XXXXXXXXXXX"
-
 SYSTEM_PROMPT = """
 あなたは高度な知識を持つAIアシスタントです．ユーザーの質問に対し，Google検索用のツールを利用して回答します．
 公式のURLを参照し，信頼性の高い情報を提供します．
@@ -71,7 +69,7 @@ def display_msg_content(message) -> None:
 @st.cache_resource
 def initialize_vertexai() -> None:
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vertexai-credentials.json"
-    vertexai.init(project=GC_PG, location="us-central1")
+    vertexai.init()
 
 
 @st.cache_resource
